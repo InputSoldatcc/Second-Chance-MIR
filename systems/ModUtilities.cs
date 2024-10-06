@@ -87,7 +87,10 @@ public class ModUtilities
         int headOrBody = random.Next(1, 3);
 
         if (bandaged == false)
-            characterLook = character.Look;
+        {
+            characterLook = new();
+            character.Look.CopyTo(characterLook);
+        }
 
         bandaged = true;
         if (headOrBody == 2) //Head
@@ -98,7 +101,12 @@ public class ModUtilities
                 if (character.Look.HeadLayer1 != null && character.Look.HeadLayer1.Name != armourPiece.Name)
                 {
                     ArmourPiece originalHat = character.Look.HeadLayer1;
-                    character.Look.HeadLayer3 = originalHat;
+                    ArmourPiece? originalHat2 = character.Look.HeadLayer2;
+
+                    character.Look.HeadLayer2 = originalHat;
+                    character.Look.HeadLayer3 = originalHat2;
+
+                    //add bandage
                     character.Look.HeadLayer1 = armourPiece;
                 }
                 else
