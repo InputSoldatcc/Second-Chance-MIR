@@ -93,7 +93,17 @@ public struct ModUtilities
         {
             Registries.Armour.HeadAccessory.TryGet("bandages1_hat", out ArmourPiece? armourPiece);
             if (armourPiece != null)
-                character.Look.HeadLayer1 = armourPiece;
+            {
+                if (character.Look.HeadLayer1 != null)
+                {
+                    character.Look.HeadLayer1 = armourPiece;
+                }
+                else
+                {
+                    character.Look.HeadLayer3 = character.Look.HeadLayer1;
+                    character.Look.HeadLayer1 = armourPiece;
+                }
+            }
         }
         else                 //Body
         {
