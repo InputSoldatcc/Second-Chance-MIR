@@ -1,0 +1,8 @@
+{
+  "id": "inputsoldat.second-chance",
+  "name": "Second Chance",
+  "authors": "inputSoldat",
+  "description": "Adds some disks tied to reviving your character",
+  "binary": "Inputsoldat.SecondChance.dll",
+  "devMode": true
+}
