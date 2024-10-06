@@ -34,6 +34,24 @@ public class SecondChanceRevive : Walgelijk.System
         if (!SecondChanceEnabled)
             return;
 
+        if (Scene.HasSystem<MainMenuSystem>())
+        {
+            bool bandaged = ModUtilities.GetBandaged();
+
+            if (bandaged) //Then reset the character's look
+            {
+                CharacterLook? characterLook = ModUtilities.GetCharacterLook();
+                MadnessUtils.FindPlayer(Game.Main.Scene, out var _, out CharacterComponent? ch);
+
+                ModUtilities.ResetStates();
+
+                if (characterLook != null && ch != null)
+                {
+                    ch.Look = characterLook;
+                }
+            }
+        }
+
         //Music Reenable
         if (PersistentSoundHandles.LevelMusic != null && !Audio.IsPlaying(PersistentSoundHandles.LevelMusic))
         {
