@@ -10,7 +10,7 @@ namespace Inputsoldat.SecondChance.systems;
 /// <summary>
 /// Includes documented methods for mods by inputsoldatcc
 /// </summary>
-public struct ModUtilities
+public class ModUtilities
 {
     /// <summary>
     /// The time it takes to revive a character.
@@ -84,23 +84,26 @@ public struct ModUtilities
     public static void BandageCharacter(CharacterComponent character)
     {
         Random random = new();
-        int headOrBody = random.Next(0, 2);
+        int headOrBody = random.Next(1, 3);
 
-        if (!bandaged)
+        if (bandaged == false)
             characterLook = character.Look;
-        
-        if (headOrBody == 1) //Head
+
+        bandaged = true;
+        if (headOrBody == 2) //Head
         {
             Registries.Armour.HeadAccessory.TryGet("bandages1_hat", out ArmourPiece? armourPiece);
             if (armourPiece != null)
             {
                 if (character.Look.HeadLayer1 != null)
                 {
+                    ArmourPiece originalHat = character.Look.HeadLayer1;
+
+                    character.Look.HeadLayer3 = originalHat;
                     character.Look.HeadLayer1 = armourPiece;
                 }
                 else
                 {
-                    character.Look.HeadLayer3 = character.Look.HeadLayer1;
                     character.Look.HeadLayer1 = armourPiece;
                 }
             }
@@ -111,7 +114,5 @@ public struct ModUtilities
             if (armourPiece != null)
                 character.Look.BodyLayer1 = armourPiece;
         }
-
-        bandaged = true;
     }
 }

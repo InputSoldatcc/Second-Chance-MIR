@@ -52,12 +52,6 @@ public class SecondChanceRevive : Walgelijk.System
             }
         }
 
-        //Music Reenable
-        if (PersistentSoundHandles.LevelMusic != null && !Audio.IsPlaying(PersistentSoundHandles.LevelMusic))
-        {
-            Audio.Play(PersistentSoundHandles.LevelMusic);
-        }
-
         //Character death listening
         if (character.IsAlive && player.RespondToUserInput && shouldListen == true)
         {
@@ -68,6 +62,12 @@ public class SecondChanceRevive : Walgelijk.System
                 ModUtilities.Revive(character, Scene);
                 shouldListen = true;
             });
+
+            //Music Reenable
+            if (PersistentSoundHandles.LevelMusic != null && !Audio.IsPlaying(PersistentSoundHandles.LevelMusic))
+            {
+                Audio.Play(PersistentSoundHandles.LevelMusic);
+            }
         }
     }
 }
