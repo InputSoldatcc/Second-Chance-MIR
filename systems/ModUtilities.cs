@@ -95,10 +95,9 @@ public class ModUtilities
             Registries.Armour.HeadAccessory.TryGet("bandages1_hat", out ArmourPiece? armourPiece);
             if (armourPiece != null)
             {
-                if (character.Look.HeadLayer1 != null)
+                if (character.Look.HeadLayer1 != null && character.Look.HeadLayer1.Name != armourPiece.Name)
                 {
                     ArmourPiece originalHat = character.Look.HeadLayer1;
-
                     character.Look.HeadLayer3 = originalHat;
                     character.Look.HeadLayer1 = armourPiece;
                 }
@@ -108,7 +107,7 @@ public class ModUtilities
                 }
             }
         }
-        else                 //Body
+        else
         {
             Registries.Armour.BodyAccessory.TryGet("bandages1_over", out ArmourPiece? armourPiece);
             if (armourPiece != null)
