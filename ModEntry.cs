@@ -24,7 +24,7 @@ public class ModEntry : IModEntry
     /// </summary>
     public void OnReady()
     {
-        //Insert System and reset bandage character
+        //Insert System
         Game.Main.OnSceneChange.AddListener(scene =>
         {
             if (scene.New != null)
@@ -32,21 +32,6 @@ public class ModEntry : IModEntry
                 //Insert system
                 if (!scene.New.HasSystem<SecondChanceRevive>())
                     scene.New.AddSystem(new SecondChanceRevive());
-
-                //Reset bandaged character
-                if (Game.Main.Scene.HasSystem<MainMenuSystem>())
-                {
-                    bool bandaged = ModUtilities.GetBandaged();
-                    CharacterLook? characterLook = ModUtilities.GetCharacterLook();
-                    MadnessUtils.FindPlayer(Game.Main.Scene, out var _, out CharacterComponent? character);
-
-                    ModUtilities.ResetStates();
-
-                    if (characterLook != null && character != null)
-                    {
-                        character.Look = characterLook;
-                    }
-                }
             }
         });
 
