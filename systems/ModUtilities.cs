@@ -15,7 +15,7 @@ public struct ModUtilities
     /// <summary>
     /// The time it takes to revive a character.
     /// </summary>
-    private const float ReviveTime = 1.8f;
+    private const float ReviveTime = 1.9f;
 
     /// <summary>
     /// The character's look before reviving.
@@ -77,8 +77,10 @@ public struct ModUtilities
     }
 
     /// <summary>
-    /// Changes the look of the given <paramref name="bodyPart"/>
+    /// Bandages a random body part on the <paramref name="character"/>.
+    /// Bandage disk required.
     /// </summary>
+    /// <param name="character"> the character to bandage.</param>
     public static void BandageCharacter(CharacterComponent character)
     {
         Random random = new();

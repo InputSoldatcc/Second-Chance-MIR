@@ -29,9 +29,11 @@ public class ModEntry : IModEntry
         {
             if (scene.New != null)
             {
+                //Insert system
                 if (!scene.New.HasSystem<SecondChanceRevive>())
                     scene.New.AddSystem(new SecondChanceRevive());
 
+                //Reset bandaged character
                 if (Game.Main.Scene.HasSystem<MainMenuSystem>())
                 {
                     bool bandaged = ModUtilities.GetBandaged();
