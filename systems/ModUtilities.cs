@@ -30,7 +30,7 @@ public class ModUtilities
     /// <summary>
     /// Head bandages 
     /// </summary>
-    private static readonly ArmourPiece[]? headBandages;
+    private static readonly ArmourPiece[] headBandages = [];
 
     /// <summary>
     /// Random for use in this class
@@ -98,7 +98,7 @@ public class ModUtilities
     /// <param name="limbType"> the limb to bandage</param>
     public static void BandageCharacter(CharacterComponent character, bool head)
     {
-        if (headBandages == null || headBandages.Length == 0)
+        if (headBandages.Length == 0)
             return;
             
         if (bandaged == false)
@@ -140,10 +140,7 @@ public class ModUtilities
     /// </summary>
     public static void SetBandageTable()
     {
-        if (headBandages != null)
-        {
-            headBandages[0] = Registries.Armour.HeadAccessory.Get("bandages1_hat");
-            headBandages[1] = Registries.Armour.HeadAccessory.Get("mouth_bandages_mouth");
-        }
+        headBandages[0] = Registries.Armour.HeadAccessory.Get("bandages1_hat");
+        headBandages[1] = Registries.Armour.HeadAccessory.Get("mouth_bandages_mouth");
     }
 }
