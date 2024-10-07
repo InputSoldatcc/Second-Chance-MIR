@@ -23,6 +23,7 @@ public class SecondChanceRevive : Walgelijk.System
     {
         var experimentMode = MadnessUtils.EditingInExperimentMode(Scene);
         bool SecondChanceEnabled = ImprobabilityDisks.IsEnabled("Second Chance") || ImprobabilityDisks.IsEnabled("Bandage Disk SC");
+        bool BandagesEnabled = ImprobabilityDisks.IsEnabled("Bandage Disk SC");
 
         if (MadnessUtils.IsPaused(Scene) || MadnessUtils.IsCutscenePlaying(Scene))
             return;
@@ -34,7 +35,7 @@ public class SecondChanceRevive : Walgelijk.System
         if (!SecondChanceEnabled)
             return;
 
-        if (Scene.HasSystem<MainMenuSystem>())
+        if (Scene.HasSystem<MainMenuSystem>() && BandagesEnabled)
         {
             bool bandaged = ModUtilities.GetBandaged();
 
@@ -47,7 +48,7 @@ public class SecondChanceRevive : Walgelijk.System
 
                 if (characterLook != null && ch != null)
                 {
-                    ch.Look = characterLook;
+                    characterLook.CopyTo(character.Look);
                 }
             }
         }
