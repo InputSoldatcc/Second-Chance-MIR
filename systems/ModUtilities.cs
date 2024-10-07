@@ -28,6 +28,16 @@ public class ModUtilities
     private static bool bandaged = false;
 
     /// <summary>
+    /// Head bandages 
+    /// </summary>
+    private static readonly ArmourPiece[]? headBandages;
+
+    /// <summary>
+    /// Random for use in this class
+    /// </summary>
+    private static readonly Random utilRandom = new();
+
+    /// <summary>
     /// Get the player's look before going to the main menu.
     /// </summary>
     /// <returns>The <see cref="CharacterLook"/> object.</returns>
@@ -73,19 +83,9 @@ public class ModUtilities
         if (ImprobabilityDisks.IsEnabled("Bandage Disk SC"))
             {
                 BodyPartComponent head = scene.GetComponentFrom<BodyPartComponent>(character.Positioning.Head.Entity);
-                BodyPartComponent body = scene.GetComponentFrom<BodyPartComponent>(character.Positioning.Body.Entity);
-                string limbType;
+                bool isHead = head.Health == 0;
 
-                if (head.Health <= 0)
-                {
-                    limbType = "head";
-                }
-                else
-                {
-                    limbType = "body";
-                }
-
-                BandageCharacter(character, limbType);
+                BandageCharacter(character, isHead);
             }
         
         Util_revive();
@@ -96,8 +96,11 @@ public class ModUtilities
     /// </summary>
     /// <param name="character"> the character to bandage</param>
     /// <param name="limbType"> the limb to bandage</param>
-    public static void BandageCharacter(CharacterComponent character, string limbType)
+    public static void BandageCharacter(CharacterComponent character, bool head)
     {
+        if (headBandages == null || headBandages.Length == 0)
+            return;
+            
         if (bandaged == false)
         {
             characterLook = new();
@@ -105,10 +108,10 @@ public class ModUtilities
         }
 
         bandaged = true;
-        if (limbType == "head")
+        if (head)
         {
-            Registries.Armour.HeadAccessory.TryGet("bandages1_hat", out ArmourPiece? armourPiece);
-            if (armourPiece != null)
+            ArmourPiece armourPiece = headBandages[utilRandom.Next(0, headBandages.Length)];
+            if (armourPiece != null && (character.Look.HeadLayer3 == null)) //Do not override 3rd layer
             {
                 ArmourPiece? originalHat1 = character.Look.HeadLayer1;
                 ArmourPiece? originalHat2 = character.Look.HeadLayer2;
@@ -122,13 +125,25 @@ public class ModUtilities
         else
         {
             Registries.Armour.BodyAccessory.TryGet("bandages1_over", out ArmourPiece? armourPiece);
-            if (armourPiece != null)
+            if (armourPiece != null && character.Look.BodyLayer2 == null) //Do not override 2nd layer
             {
                 ArmourPiece? originalArmor = character.Look.BodyLayer1;
 
                 character.Look.BodyLayer1 = armourPiece;
                 character.Look.BodyLayer2 = originalArmor;
             }
+        }
+    }
+
+    /// <summary>
+    /// Assign <see cref="ArmourPiece"/> to <see cref="headBandages"/>.
+    /// </summary>
+    public static void SetBandageTable()
+    {
+        if (headBandages != null)
+        {
+            headBandages[0] = Registries.Armour.HeadAccessory.Get("bandages1_hat");
+            headBandages[1] = Registries.Armour.HeadAccessory.Get("mouth_bandages_mouth");
         }
     }
 }
