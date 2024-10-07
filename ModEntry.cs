@@ -39,9 +39,6 @@ public class ModEntry : IModEntry
         ImprobabilityDisks.All.Add("Second Chance", new SecondChanceDisk());
         ImprobabilityDisks.All.Add("Bandage Disk SC", new FirstAidKitDisk());
         ImprobabilityDisks.SetIncompatible("Second Chance", "Bandage Disk SC", "tricky");
-
-        //Load bandage array(s)
-        ModUtilities.SetBandageTable();
     }
 
     /// <summary>

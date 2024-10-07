@@ -28,11 +28,6 @@ public class ModUtilities
     private static bool bandaged = false;
 
     /// <summary>
-    /// Head bandages 
-    /// </summary>
-    private static readonly ArmourPiece[] headBandages = [];
-
-    /// <summary>
     /// Random for use in this class
     /// </summary>
     private static readonly Random utilRandom = new();
@@ -74,7 +69,6 @@ public class ModUtilities
         });
     }
 
-    //overload
     /// <summary>
     /// Revives the player and bandages them up.
     /// </summary>
@@ -83,7 +77,8 @@ public class ModUtilities
         if (ImprobabilityDisks.IsEnabled("Bandage Disk SC"))
             {
                 BodyPartComponent head = scene.GetComponentFrom<BodyPartComponent>(character.Positioning.Head.Entity);
-                bool isHead = head.Health == 0;
+                BodyPartComponent body = scene.GetComponentFrom<BodyPartComponent>(character.Positioning.Body.Entity);
+                var isHead = head.Health < body.Health;
 
                 BandageCharacter(character, isHead);
             }
@@ -98,9 +93,6 @@ public class ModUtilities
     /// <param name="limbType"> the limb to bandage</param>
     public static void BandageCharacter(CharacterComponent character, bool head)
     {
-        if (headBandages.Length == 0)
-            return;
-            
         if (bandaged == false)
         {
             characterLook = new();
@@ -110,7 +102,17 @@ public class ModUtilities
         bandaged = true;
         if (head)
         {
-            ArmourPiece armourPiece = headBandages[utilRandom.Next(0, headBandages.Length)];
+            ArmourPiece? armourPiece;
+
+            //Select random
+            if (utilRandom.Next(1, 3) == 1) {
+                Registries.Armour.HeadAccessory.TryGet("bandages1_hat", out var selected);
+                armourPiece = selected;
+            } else {
+                Registries.Armour.HeadAccessory.TryGet("mouth_bandages_mouth", out var selected);
+                armourPiece = selected;
+            }
+
             if (armourPiece != null) //Do not override 3rd layer
             {
                 ArmourPiece? originalHat1 = character.Look.HeadLayer1;
@@ -133,14 +135,5 @@ public class ModUtilities
                 character.Look.BodyLayer2 = originalArmor;
             }
         }
-    }
-
-    /// <summary>
-    /// Assign <see cref="ArmourPiece"/> to <see cref="headBandages"/>.
-    /// </summary>
-    public static void SetBandageTable()
-    {
-        headBandages[0] = Registries.Armour.HeadAccessory.Get("bandages1_hat");
-        headBandages[1] = Registries.Armour.HeadAccessory.Get("mouth_bandages_mouth");
     }
 }
