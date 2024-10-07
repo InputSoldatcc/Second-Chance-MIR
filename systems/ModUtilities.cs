@@ -48,7 +48,7 @@ public class ModUtilities
         characterLook = null;
     }
 
-
+    
     /// <summary>
     /// Private <see langword="method"/> for <see langword="public"/> "Revive" methods to use.
     /// </summary>
@@ -71,21 +71,33 @@ public class ModUtilities
     public static void Revive(CharacterComponent character, Scene scene)
     {
         if (ImprobabilityDisks.IsEnabled("Bandage Disk SC"))
-            BandageCharacter(character);
+            {
+                BodyPartComponent head = scene.GetComponentFrom<BodyPartComponent>(character.Positioning.Head.Entity);
+                BodyPartComponent body = scene.GetComponentFrom<BodyPartComponent>(character.Positioning.Body.Entity);
+                string limbType;
+
+                if (head.Health <= 0)
+                {
+                    limbType = "head";
+                }
+                else
+                {
+                    limbType = "body";
+                }
+
+                BandageCharacter(character, limbType);
+            }
         
         Util_revive();
     }
 
     /// <summary>
-    /// Bandages a random body part on the <paramref name="character"/>.
-    /// Bandage disk required.
+    /// Bandages the given player <paramref name="character"/>.
     /// </summary>
-    /// <param name="character"> the character to bandage.</param>
-    public static void BandageCharacter(CharacterComponent character)
+    /// <param name="character"> the character to bandage</param>
+    /// <param name="limbType"> the limb to bandage</param>
+    public static void BandageCharacter(CharacterComponent character, string limbType)
     {
-        Random random = new();
-        int headOrBody = random.Next(1, 3);
-
         if (bandaged == false)
         {
             characterLook = new();
@@ -93,7 +105,7 @@ public class ModUtilities
         }
 
         bandaged = true;
-        if (headOrBody == 2) //Head
+        if (limbType == "head")
         {
             Registries.Armour.HeadAccessory.TryGet("bandages1_hat", out ArmourPiece? armourPiece);
             if (armourPiece != null)
