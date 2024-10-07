@@ -111,7 +111,7 @@ public class ModUtilities
         if (head)
         {
             ArmourPiece armourPiece = headBandages[utilRandom.Next(0, headBandages.Length)];
-            if (armourPiece != null && (character.Look.HeadLayer3 == null)) //Do not override 3rd layer
+            if (armourPiece != null) //Do not override 3rd layer
             {
                 ArmourPiece? originalHat1 = character.Look.HeadLayer1;
                 ArmourPiece? originalHat2 = character.Look.HeadLayer2;
@@ -125,7 +125,7 @@ public class ModUtilities
         else
         {
             Registries.Armour.BodyAccessory.TryGet("bandages1_over", out ArmourPiece? armourPiece);
-            if (armourPiece != null && character.Look.BodyLayer2 == null) //Do not override 2nd layer
+            if (armourPiece != null) //Do not override 2nd layer
             {
                 ArmourPiece? originalArmor = character.Look.BodyLayer1;
 
